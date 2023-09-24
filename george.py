@@ -54,6 +54,10 @@ for i in range(1,4):
         entry.place(x=200,y=y_val)
 
 
+def format_currency(num):
+    cur = locale.currency(num, grouping=True)
+    return cur[:-3]
+
 
 def submit():
     business_name = business_name_var.get()
@@ -86,26 +90,26 @@ def submit():
     # if not offer2_filled and not offer3_filled:
     can.drawString(62, 480, offers[1]["Frequency"].get())
     can.drawString(128, 480, offers[1]["Term"].get()) 
-    can.drawString(260, 480, locale.currency(int(offers[1]["Payback"].get()), grouping=True))
+    can.drawString(260, 480, format_currency(int(offers[1]["Payback"].get())))
     can.drawString(345, 480, offers[1]["Payments"].get())
-    can.drawString(460, 480, locale.currency(int(offers[1]["Payment"].get()), grouping=True))
+    can.drawString(460, 480, format_currency(int(offers[1]["Payment"].get())))
     can.drawString(360, 466, "before refinance")
 
     can.setFillColorRGB(51/256, 153/256, 255/256)
-    can.drawString(194, 480, locale.currency(int(offers[1]["Amount"].get()), grouping=True))
+    can.drawString(194, 480, format_currency(int(offers[1]["Amount"].get())))
     can.drawString(345, 466, offers[1]["Payments before refinance"].get())
 
     can.setFillColorRGB(255,255,255)
     if offer2_filled and not offer3_filled:
         can.drawString(62, 440, offers[2]["Frequency"].get())
         can.drawString(128, 440, offers[2]["Term"].get()) 
-        can.drawString(260, 440, locale.currency(int(offers[2]["Payback"].get()), grouping=True))
+        can.drawString(260, 440, format_currency(int(offers[2]["Payback"].get()))
         can.drawString(345, 440, offers[2]["Payments"].get())
-        can.drawString(460, 440, locale.currency(int(offers[2]["Payment"].get()), grouping=True))
+        can.drawString(460, 440, format_currency(int(offers[2]["Payment"].get()))
         can.drawString(360, 426, "before refinance")
 
         can.setFillColorRGB(51/256, 153/256, 255/256)
-        can.drawString(194, 440, locale.currency(int(offers[2]["Amount"].get()), grouping=True))
+        can.drawString(194, 440, format_currency(int(offers[2]["Amount"].get()))
         can.drawString(345, 426, offers[2]["Payments before refinance"].get())
 
 
