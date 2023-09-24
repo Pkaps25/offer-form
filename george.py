@@ -16,21 +16,16 @@ base.title("registration form")
 
 business_name_var = StringVar()
 owner_name_var = StringVar()
-# term_var = StringVar()
-# amount_var = StringVar()
-# payback_var = StringVar()
-# payments_var = StringVar()
-# payment_var = StringVar()
 
 
 general_choices = {
-    "business": business_name_var, 
-    "owner": owner_name_var, 
+    "Business name": business_name_var, 
+    "Owner name": owner_name_var, 
     }
-y_vals = iter(range(10,2000,40))
+y_vals = iter(range(10,2000,30))
 for label, var in general_choices.items():
     y_val = next(y_vals)
-    label = Label(base, text=label, width=10, font=("arial", 12))  
+    label = Label(base, text=label, width=25, font=("arial", 12))  
     label.place(x=19, y=y_val)  
     entry = Entry(base, textvariable=var)  
     entry.place(x=200,y=y_val)
@@ -87,32 +82,87 @@ def submit():
     if offer3_filled:
         template_pdf = "offer3.pdf"
 
-    # if not offer2_filled and not offer3_filled:
-    can.drawString(62, 480, offers[1]["Frequency"].get())
-    can.drawString(128, 480, offers[1]["Term"].get()) 
-    can.drawString(260, 480, format_currency(int(offers[1]["Payback"].get())))
-    can.drawString(345, 480, offers[1]["Payments"].get())
-    can.drawString(460, 480, format_currency(int(offers[1]["Payment"].get())))
-    can.drawString(360, 466, "before refinance")
+    # only 1 offer
+    if not offer2_filled and not offer3_filled:
+        can.drawString(62, 484, offers[1]["Frequency"].get())
+        can.drawString(128, 484, offers[1]["Term"].get()) 
+        can.drawString(260, 484, format_currency(int(offers[1]["Payback"].get())))
+        can.drawString(345, 484, offers[1]["Payments"].get())
+        can.drawString(460, 484, format_currency(int(offers[1]["Payment"].get())))
+        can.drawString(360, 470, "before refinance")
 
-    can.setFillColorRGB(51/256, 153/256, 255/256)
-    can.drawString(194, 480, format_currency(int(offers[1]["Amount"].get())))
-    can.drawString(345, 466, offers[1]["Payments before refinance"].get())
+        can.setFillColorRGB(51/256, 153/256, 255/256)
+        can.drawString(194, 484, format_currency(int(offers[1]["Amount"].get())))
+        can.drawString(345, 470, offers[1]["Payments before refinance"].get())
 
-    can.setFillColorRGB(255,255,255)
-    if offer2_filled and not offer3_filled:
+    # 2 offers
+    elif offer2_filled and not offer3_filled:
+        # first offer
+        can.setFillColorRGB(0,0,0)
+        can.drawString(62, 490, offers[1]["Frequency"].get())
+        can.drawString(128, 490, offers[1]["Term"].get()) 
+        can.drawString(260, 490, format_currency(int(offers[1]["Payback"].get())))
+        can.drawString(345, 490, offers[1]["Payments"].get())
+        can.drawString(460, 490, format_currency(int(offers[1]["Payment"].get())))
+        can.drawString(360, 476, "before refinance")
+
+        can.setFillColorRGB(51/256, 153/256, 255/256)
+        can.drawString(194, 490, format_currency(int(offers[1]["Amount"].get())))
+        can.drawString(345, 476, offers[1]["Payments before refinance"].get())
+
+        # second offer
+        can.setFillColorRGB(0,0,0)
         can.drawString(62, 440, offers[2]["Frequency"].get())
         can.drawString(128, 440, offers[2]["Term"].get()) 
-        can.drawString(260, 440, format_currency(int(offers[2]["Payback"].get()))
+        can.drawString(260, 440, format_currency(int(offers[2]["Payback"].get())))
         can.drawString(345, 440, offers[2]["Payments"].get())
-        can.drawString(460, 440, format_currency(int(offers[2]["Payment"].get()))
+        can.drawString(460, 440, format_currency(int(offers[2]["Payment"].get())))
         can.drawString(360, 426, "before refinance")
 
         can.setFillColorRGB(51/256, 153/256, 255/256)
-        can.drawString(194, 440, format_currency(int(offers[2]["Amount"].get()))
+        can.drawString(194, 440, format_currency(int(offers[2]["Amount"].get())))
         can.drawString(345, 426, offers[2]["Payments before refinance"].get())
 
+    # 3 offers
+    elif offer2_filled and offer3_filled:
+        # first offer
+        can.setFillColorRGB(0,0,0)
+        can.drawString(62, 495, offers[1]["Frequency"].get())
+        can.drawString(128, 495, offers[1]["Term"].get()) 
+        can.drawString(260, 495, format_currency(int(offers[1]["Payback"].get())))
+        can.drawString(345, 495, offers[1]["Payments"].get())
+        can.drawString(460, 495, format_currency(int(offers[1]["Payment"].get())))
+        can.drawString(360, 481, "before refinance")
 
+        can.setFillColorRGB(51/256, 153/256, 255/256)
+        can.drawString(194, 495, format_currency(int(offers[1]["Amount"].get())))
+        can.drawString(345, 481, offers[1]["Payments before refinance"].get())
+
+        # second offer
+        can.setFillColorRGB(0,0,0)
+        can.drawString(62, 452, offers[2]["Frequency"].get())
+        can.drawString(128, 452, offers[2]["Term"].get()) 
+        can.drawString(260, 452, format_currency(int(offers[2]["Payback"].get())))
+        can.drawString(345, 452, offers[2]["Payments"].get())
+        can.drawString(460, 452, format_currency(int(offers[2]["Payment"].get())))
+        can.drawString(360, 438, "before refinance")
+
+        can.setFillColorRGB(51/256, 153/256, 255/256)
+        can.drawString(194, 452, format_currency(int(offers[2]["Amount"].get())))
+        can.drawString(345, 438, offers[2]["Payments before refinance"].get())
+
+        # third offer
+        can.setFillColorRGB(0,0,0)
+        can.drawString(62, 412, offers[2]["Frequency"].get())
+        can.drawString(128, 412, offers[2]["Term"].get()) 
+        can.drawString(260, 412, format_currency(int(offers[2]["Payback"].get())))
+        can.drawString(345, 412, offers[2]["Payments"].get())
+        can.drawString(460, 412, format_currency(int(offers[2]["Payment"].get())))
+        can.drawString(360, 398, "before refinance")
+
+        can.setFillColorRGB(51/256, 153/256, 255/256)
+        can.drawString(194, 412, format_currency(int(offers[2]["Amount"].get())))
+        can.drawString(345, 398, offers[2]["Payments before refinance"].get())
 
     can.save()
 
@@ -133,9 +183,8 @@ def submit():
     output.write(outputStream)
     outputStream.close()
 
+    # close the form
     base.destroy()
-
-  
 
   
 Button(base, text="Register", width=10, command=submit).place(x=20,y=900)  
