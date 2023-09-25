@@ -85,7 +85,10 @@ def submit():
     # only 1 offer
     if not offer2_filled and not offer3_filled:
         can.drawString(62, 484, offers[1]["Frequency"].get())
-        can.drawString(128, 484, offers[1]["Term"].get()) 
+
+        term = offers[1]["Term"].get()
+        can.drawString(128, 484, term) 
+        can.drawString(138 if int(term) < 10 else 143, 484, "Month(s)") 
         can.drawString(260, 484, format_currency(int(offers[1]["Payback"].get())))
         can.drawString(345, 484, offers[1]["Payments"].get())
         can.drawString(460, 484, format_currency(int(offers[1]["Payment"].get())))
@@ -100,7 +103,10 @@ def submit():
         # first offer
         can.setFillColorRGB(0,0,0)
         can.drawString(62, 490, offers[1]["Frequency"].get())
-        can.drawString(128, 490, offers[1]["Term"].get()) 
+
+        term = offers[1]["Term"].get()
+        can.drawString(128, 490, term) 
+        can.drawString(138 if int(term) < 10 else 143, 490, "Month(s)")
         can.drawString(260, 490, format_currency(int(offers[1]["Payback"].get())))
         can.drawString(345, 490, offers[1]["Payments"].get())
         can.drawString(460, 490, format_currency(int(offers[1]["Payment"].get())))
@@ -113,7 +119,10 @@ def submit():
         # second offer
         can.setFillColorRGB(0,0,0)
         can.drawString(62, 440, offers[2]["Frequency"].get())
-        can.drawString(128, 440, offers[2]["Term"].get()) 
+
+        term = offers[2]["Term"].get()
+        can.drawString(128, 440, term) 
+        can.drawString(138 if int(term) < 10 else 143, 440, "Month(s)")
         can.drawString(260, 440, format_currency(int(offers[2]["Payback"].get())))
         can.drawString(345, 440, offers[2]["Payments"].get())
         can.drawString(460, 440, format_currency(int(offers[2]["Payment"].get())))
@@ -128,7 +137,10 @@ def submit():
         # first offer
         can.setFillColorRGB(0,0,0)
         can.drawString(62, 495, offers[1]["Frequency"].get())
-        can.drawString(128, 495, offers[1]["Term"].get()) 
+
+        term = offers[1]["Term"].get()
+        can.drawString(128, 495, term)
+        can.drawString(138 if int(term) < 10 else 143, 495, "Month(s)") 
         can.drawString(260, 495, format_currency(int(offers[1]["Payback"].get())))
         can.drawString(345, 495, offers[1]["Payments"].get())
         can.drawString(460, 495, format_currency(int(offers[1]["Payment"].get())))
@@ -141,7 +153,10 @@ def submit():
         # second offer
         can.setFillColorRGB(0,0,0)
         can.drawString(62, 452, offers[2]["Frequency"].get())
-        can.drawString(128, 452, offers[2]["Term"].get()) 
+
+        term = offers[2]["Term"].get()
+        can.drawString(128, 452, term) 
+        can.drawString(138 if int(term) < 10 else 143, 452, "Month(s)")
         can.drawString(260, 452, format_currency(int(offers[2]["Payback"].get())))
         can.drawString(345, 452, offers[2]["Payments"].get())
         can.drawString(460, 452, format_currency(int(offers[2]["Payment"].get())))
@@ -154,7 +169,10 @@ def submit():
         # third offer
         can.setFillColorRGB(0,0,0)
         can.drawString(62, 412, offers[2]["Frequency"].get())
-        can.drawString(128, 412, offers[2]["Term"].get()) 
+
+        term = offers[3]["Term"].get()
+        can.drawString(128, 412, term) 
+        can.drawString(138 if int(term) < 10 else 143, 412, "Month(s)")
         can.drawString(260, 412, format_currency(int(offers[2]["Payback"].get())))
         can.drawString(345, 412, offers[2]["Payments"].get())
         can.drawString(460, 412, format_currency(int(offers[2]["Payment"].get())))
