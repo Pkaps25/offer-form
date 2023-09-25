@@ -179,7 +179,7 @@ def submit():
     page.merge_page(new_pdf.pages[0])
     output.add_page(page)
     # finally, write "output" to a real file
-    outputStream = open("destination.pdf", "wb")
+    outputStream = open(f"Approval - {business_name}.pdf", "wb")
     output.write(outputStream)
     outputStream.close()
 
