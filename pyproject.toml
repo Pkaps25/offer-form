@@ -4,17 +4,13 @@ authors = ["Peter Kaplinsky (peter.kaplinsky@gmail.com)"]
 version = "0.1.0"
 description = "A tool to auto fill offer forms for NBMC"
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
-
 [tool.poetry.dependencies]
-python = "^3.11"
-isort = "^5.0"
-flake8 = "^3.9"
-black = "^21.9.1"
-PyPDF2 = "^1.26"
-reportlab = "^3.5"
+python = "^3.11.4"
+isort = "^5.12.0"
+flake8 = "^6.1"
+black = "^22.10.0"
+PyPDF2 = "^3.0.1"
+reportlab = "4.0.5"
 
 [tool.isort]
 profile = "black"
