@@ -93,6 +93,7 @@ def submit():
         can.drawString(345, 484, offers[1]["Payments"].get())
         can.drawString(460, 484, format_currency(int(offers[1]["Payment"].get())))
         can.drawString(360, 470, "before refinance")
+        can.drawString(25, 380, "Additional notes:") # TODO add a text field
 
         can.setFillColorRGB(51/256, 153/256, 255/256)
         can.drawString(194, 484, format_currency(int(offers[1]["Amount"].get())))
