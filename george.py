@@ -9,14 +9,15 @@ from reportlab.pdfbase.ttfonts import TTFont
 import io
 import locale
 import enum
+from collections import OrderedDict
 
 base = Tk()  
 locale.setlocale( locale.LC_ALL, '' )
 base.geometry("1000x1000")  
 base.title("registration form")  
 
-business_name_var = StringVar()
-owner_name_var = StringVar()
+
+additional_notes_var = StringVar()
 
 class OfferItem(enum.Enum):
     FREQUENCY = "Frequency of Payment"
@@ -26,28 +27,33 @@ class OfferItem(enum.Enum):
     PAYMENTS = "Number of Payments"
     PAYMENT = "Payment Amount"
 
+class RequiredItem(enum.Enum):
+    BUSINESS_NAME = "Business name"
+    OWNER_NAME = "Owner name"
 
-
-general_choices = {
-    "Business name": business_name_var, 
-    "Owner name": owner_name_var, 
-    }
+label_map = {}
+required_vars = {}
 y_vals = iter(range(10,2000,30))
-for label, var in general_choices.items():
+for required_item in RequiredItem:
+    required_vars[required_item] = StringVar()
     y_val = next(y_vals)
-    label = Label(base, text=label, width=25, font=("arial", 12))  
+    label = Label(base, text=required_item.value, width=25, font=("arial", 12))  
     label.place(x=19, y=y_val)  
-    entry = Entry(base, textvariable=var)  
+    entry = Entry(base, textvariable=required_vars[required_item])  
     entry.place(x=200,y=y_val)
+    label_map[required_item] = label 
+    
 
-offers = {}
+offers = OrderedDict()
 for i in range(1,4):
     offers[i] = {
         k.value: StringVar() for k in OfferItem
     }
     for labelstr, var in offers[i].items():
         y_val = next(y_vals)
+        label_text = f"{labelstr} {i}"
         label = Label(base, text=f"{labelstr} {i}", width=25, font=("arial", 12))
+        label_map[label_text] = label
         label.place(x=19, y=y_val)
         if labelstr == OfferItem.FREQUENCY.value:
             entry = OptionMenu(base, var, "Daily", "Bi-Weekly", "Weekly", "Monthly")
@@ -63,9 +69,57 @@ def format_currency(num):
     return cur[:-3]
 
 
+def validate_form():
+    for label in label_map.values():
+        label.config(foreground="black")
+    valid = True
+
+    for required_item in RequiredItem:
+        if not required_vars[required_item].get():
+            label_map[required_item].config(foreground="red")
+            valid = False
+
+    for i, offer_map in offers.items():
+        # ensure for each offer, either no fields are filled or all fields are filled
+        filled = []
+        not_filled = []
+        for offer_item in OfferItem:
+            selected = (
+                (offer_item == OfferItem.FREQUENCY and offer_map[OfferItem.FREQUENCY.value].get() != "Select") or
+                (offer_item != OfferItem.FREQUENCY and offer_map[offer_item.value].get() != "")
+            )
+            blank = (
+                (offer_item == OfferItem.FREQUENCY and offer_map[OfferItem.FREQUENCY.value].get() == "Select") or
+                (offer_item != OfferItem.FREQUENCY and offer_map[offer_item.value].get() == "")
+            )
+
+            filled.append(selected)
+            not_filled.append(blank)
+            
+
+        valid = all(filled) if i == 1 else (all(filled) or all(not_filled))
+        if not valid:
+            for offer_item, value in offer_map.items():
+                if (
+                    (offer_item == OfferItem.FREQUENCY.value and value.get() == "Select") or 
+                    (offer_item != OfferItem.FREQUENCY.value and value.get() == "")
+                ):
+                    label_map[f"{offer_item} {i}"].config(foreground="red")
+            return valid
+
+
+    # if not label_map["Owner name"].config
+    
+        
+    return valid
+
 def submit():
-    business_name = business_name_var.get()
-    owner_name = owner_name_var.get()
+
+    if not validate_form():
+        return
+
+    business_name = required_vars[RequiredItem.BUSINESS_NAME].get()
+    owner_name = required_vars[RequiredItem.OWNER_NAME].get()
 
     packet = io.BytesIO()
     can = canvas.Canvas(packet, pagesize=letter)
@@ -220,6 +274,5 @@ def submit():
     # close the form
     base.destroy()
 
-  
 Button(base, text="Register", width=10, command=submit).place(x=20,y=900)  
 base.mainloop()
