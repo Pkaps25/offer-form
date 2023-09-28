@@ -12,6 +12,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 
 FORM_FONT_SIZE = 13
+BLUE_COLOR_RGB = (51 / 256, 153 / 256, 255 / 256)
 
 
 base = Tk()
@@ -176,9 +177,10 @@ def submit():
             460, 484, format_currency(int(offers[1][OfferItem.PAYMENT.value].get()))
         )
         can.drawString(360, 470, "before refinance")
-        can.drawString(25, 380, "Additional notes:")  # TODO add a text field
+        can.drawString(25, 380, "Additional notes:")
+        can.drawString(112, 380, additional_notes_var.get())
 
-        can.setFillColorRGB(51 / 256, 153 / 256, 255 / 256)
+        can.setFillColorRGB(*BLUE_COLOR_RGB)
         can.drawString(
             194, 484, format_currency(int(offers[1][OfferItem.AMOUNT.value].get()))
         )
@@ -188,6 +190,9 @@ def submit():
     elif offer2_filled and not offer3_filled:
         # first offer
         can.setFillColorRGB(0, 0, 0)
+        can.drawString(25, 380, "Additional notes:")
+        can.drawString(112, 380, additional_notes_var.get())
+
         can.drawString(62, 490, offers[1][OfferItem.FREQUENCY.value].get())
 
         num_payments = offers[1][OfferItem.PAYMENTS.value].get()
@@ -203,7 +208,7 @@ def submit():
         )
         can.drawString(360, 476, "before refinance")
 
-        can.setFillColorRGB(51 / 256, 153 / 256, 255 / 256)
+        can.setFillColorRGB(*BLUE_COLOR_RGB)
         can.drawString(
             194, 490, format_currency(int(offers[1][OfferItem.AMOUNT.value].get()))
         )
@@ -226,7 +231,7 @@ def submit():
         )
         can.drawString(360, 426, "before refinance")
 
-        can.setFillColorRGB(51 / 256, 153 / 256, 255 / 256)
+        can.setFillColorRGB(*BLUE_COLOR_RGB)
         can.drawString(
             194, 440, format_currency(int(offers[2][OfferItem.AMOUNT.value].get()))
         )
@@ -251,7 +256,7 @@ def submit():
         )
         can.drawString(360, 481, "before refinance")
 
-        can.setFillColorRGB(51 / 256, 153 / 256, 255 / 256)
+        can.setFillColorRGB(*BLUE_COLOR_RGB)
         can.drawString(
             194, 495, format_currency(int(offers[1][OfferItem.AMOUNT.value].get()))
         )
@@ -274,7 +279,7 @@ def submit():
         )
         can.drawString(360, 438, "before refinance")
 
-        can.setFillColorRGB(51 / 256, 153 / 256, 255 / 256)
+        can.setFillColorRGB(*BLUE_COLOR_RGB)
         can.drawString(
             194, 452, format_currency(int(offers[2][OfferItem.AMOUNT.value].get()))
         )
@@ -297,7 +302,7 @@ def submit():
         )
         can.drawString(360, 398, "before refinance")
 
-        can.setFillColorRGB(51 / 256, 153 / 256, 255 / 256)
+        can.setFillColorRGB(*BLUE_COLOR_RGB)
         can.drawString(
             194, 412, format_currency(int(offers[3][OfferItem.AMOUNT.value].get()))
         )
