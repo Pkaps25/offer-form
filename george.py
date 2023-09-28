@@ -8,6 +8,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 import io
 import locale
+import enum
 
 base = Tk()  
 locale.setlocale( locale.LC_ALL, '' )
@@ -16,6 +17,15 @@ base.title("registration form")
 
 business_name_var = StringVar()
 owner_name_var = StringVar()
+
+class OfferItem(enum.Enum):
+    FREQUENCY = "Frequency of Payment"
+    TERM = "Term in Months"
+    AMOUNT = "Funding Amount"
+    PAYBACK = "Payback Amount"
+    PAYMENTS = "Number of Payments"
+    PAYMENT = "Payment Amount"
+
 
 
 general_choices = {
@@ -30,18 +40,17 @@ for label, var in general_choices.items():
     entry = Entry(base, textvariable=var)  
     entry.place(x=200,y=y_val)
 
-offer_items = ["Frequency", "Term", "Amount", "Payback", "Payments", "Payments before refinance", "Payment"]
 offers = {}
 for i in range(1,4):
     offers[i] = {
-        k: StringVar() for k in offer_items
+        k.value: StringVar() for k in OfferItem
     }
     for labelstr, var in offers[i].items():
         y_val = next(y_vals)
         label = Label(base, text=f"{labelstr} {i}", width=25, font=("arial", 12))
         label.place(x=19, y=y_val)
-        if labelstr == "Frequency":
-            entry = OptionMenu(base, var, "Bi-Weekly", "Weekly", "Monthly")
+        if labelstr == OfferItem.FREQUENCY.value:
+            entry = OptionMenu(base, var, "Daily", "Bi-Weekly", "Weekly", "Monthly")
             var.set("Select")
             entry.pack()
         else:
@@ -74,8 +83,8 @@ def submit():
     can.drawString(520, 720, date.today().strftime("%m/%d/%Y"))
 
     # Write offer options
-    offer2_filled = offers[2]["Term"].get() != ""
-    offer3_filled = offers[3]["Term"].get() != ""
+    offer2_filled = offers[2][OfferItem.TERM.value].get() != ""
+    offer3_filled = offers[3][OfferItem.TERM.value].get() != ""
     template_pdf = "offer1.pdf"
     if offer2_filled:
         template_pdf = "offer2.pdf"
@@ -84,104 +93,110 @@ def submit():
 
     # only 1 offer
     if not offer2_filled and not offer3_filled:
-        can.drawString(62, 484, offers[1]["Frequency"].get())
+        can.drawString(62, 484, offers[1][OfferItem.FREQUENCY.value].get())
 
-        term = offers[1]["Term"].get()
+        num_payments = offers[1][OfferItem.PAYMENTS.value].get()
+        term = offers[1][OfferItem.TERM.value].get()
         can.drawString(128, 484, term) 
         can.drawString(138 if int(term) < 10 else 143, 484, "Month(s)") 
-        can.drawString(260, 484, format_currency(int(offers[1]["Payback"].get())))
-        can.drawString(345, 484, offers[1]["Payments"].get())
-        can.drawString(460, 484, format_currency(int(offers[1]["Payment"].get())))
+        can.drawString(260, 484, format_currency(int(offers[1][OfferItem.PAYBACK.value].get())))
+        can.drawString(345, 484, num_payments)
+        can.drawString(460, 484, format_currency(int(offers[1][OfferItem.PAYMENT.value].get())))
         can.drawString(360, 470, "before refinance")
         can.drawString(25, 380, "Additional notes:") # TODO add a text field
 
         can.setFillColorRGB(51/256, 153/256, 255/256)
-        can.drawString(194, 484, format_currency(int(offers[1]["Amount"].get())))
-        can.drawString(345, 470, offers[1]["Payments before refinance"].get())
+        can.drawString(194, 484, format_currency(int(offers[1][OfferItem.AMOUNT.value].get())))
+        can.drawString(345, 470, str(int(num_payments) // 2))
 
     # 2 offers
     elif offer2_filled and not offer3_filled:
         # first offer
         can.setFillColorRGB(0,0,0)
-        can.drawString(62, 490, offers[1]["Frequency"].get())
+        can.drawString(62, 490, offers[1][OfferItem.FREQUENCY.value].get())
 
-        term = offers[1]["Term"].get()
+        num_payments = offers[1][OfferItem.PAYMENTS.value].get()
+        term = offers[1][OfferItem.TERM.value].get()
         can.drawString(128, 490, term) 
         can.drawString(138 if int(term) < 10 else 143, 490, "Month(s)")
-        can.drawString(260, 490, format_currency(int(offers[1]["Payback"].get())))
-        can.drawString(345, 490, offers[1]["Payments"].get())
-        can.drawString(460, 490, format_currency(int(offers[1]["Payment"].get())))
+        can.drawString(260, 490, format_currency(int(offers[1][OfferItem.PAYBACK.value].get())))
+        can.drawString(345, 490, num_payments)
+        can.drawString(460, 490, format_currency(int(offers[1][OfferItem.PAYMENT.value].get())))
         can.drawString(360, 476, "before refinance")
 
         can.setFillColorRGB(51/256, 153/256, 255/256)
-        can.drawString(194, 490, format_currency(int(offers[1]["Amount"].get())))
-        can.drawString(345, 476, offers[1]["Payments before refinance"].get())
+        can.drawString(194, 490, format_currency(int(offers[1][OfferItem.AMOUNT.value].get())))
+        can.drawString(345, 476, str(int(num_payments) // 2))
 
         # second offer
         can.setFillColorRGB(0,0,0)
-        can.drawString(62, 440, offers[2]["Frequency"].get())
+        can.drawString(62, 440, offers[2][OfferItem.FREQUENCY.value].get())
 
-        term = offers[2]["Term"].get()
+        num_payments = offers[2][OfferItem.PAYMENTS.value].get()
+        term = offers[2][OfferItem.TERM.value].get()
         can.drawString(128, 440, term) 
         can.drawString(138 if int(term) < 10 else 143, 440, "Month(s)")
-        can.drawString(260, 440, format_currency(int(offers[2]["Payback"].get())))
-        can.drawString(345, 440, offers[2]["Payments"].get())
-        can.drawString(460, 440, format_currency(int(offers[2]["Payment"].get())))
+        can.drawString(260, 440, format_currency(int(offers[2][OfferItem.PAYBACK.value].get())))
+        can.drawString(345, 440, num_payments)
+        can.drawString(460, 440, format_currency(int(offers[2][OfferItem.PAYMENT.value].get())))
         can.drawString(360, 426, "before refinance")
 
         can.setFillColorRGB(51/256, 153/256, 255/256)
-        can.drawString(194, 440, format_currency(int(offers[2]["Amount"].get())))
-        can.drawString(345, 426, offers[2]["Payments before refinance"].get())
+        can.drawString(194, 440, format_currency(int(offers[2][OfferItem.AMOUNT.value].get())))
+        can.drawString(345, 426, str(int(num_payments) // 2))
 
     # 3 offers
     elif offer2_filled and offer3_filled:
         # first offer
         can.setFillColorRGB(0,0,0)
-        can.drawString(62, 495, offers[1]["Frequency"].get())
+        can.drawString(62, 495, offers[1][OfferItem.FREQUENCY.value].get())
 
-        term = offers[1]["Term"].get()
+        num_payments = offers[1][OfferItem.PAYMENTS.value].get()
+        term = offers[1][OfferItem.TERM.value].get()
         can.drawString(128, 495, term)
         can.drawString(138 if int(term) < 10 else 143, 495, "Month(s)") 
-        can.drawString(260, 495, format_currency(int(offers[1]["Payback"].get())))
-        can.drawString(345, 495, offers[1]["Payments"].get())
-        can.drawString(460, 495, format_currency(int(offers[1]["Payment"].get())))
+        can.drawString(260, 495, format_currency(int(offers[1][OfferItem.PAYBACK.value].get())))
+        can.drawString(345, 495, num_payments)
+        can.drawString(460, 495, format_currency(int(offers[1][OfferItem.PAYMENT.value].get())))
         can.drawString(360, 481, "before refinance")
 
         can.setFillColorRGB(51/256, 153/256, 255/256)
-        can.drawString(194, 495, format_currency(int(offers[1]["Amount"].get())))
-        can.drawString(345, 481, offers[1]["Payments before refinance"].get())
+        can.drawString(194, 495, format_currency(int(offers[1][OfferItem.AMOUNT.value].get())))
+        can.drawString(345, 481, str(int(num_payments) // 2))
 
         # second offer
         can.setFillColorRGB(0,0,0)
-        can.drawString(62, 452, offers[2]["Frequency"].get())
+        can.drawString(62, 452, offers[2][OfferItem.FREQUENCY.value].get())
 
-        term = offers[2]["Term"].get()
+        num_payments = offers[2][OfferItem.PAYMENTS.value].get()
+        term = offers[2][OfferItem.TERM.value].get()
         can.drawString(128, 452, term) 
         can.drawString(138 if int(term) < 10 else 143, 452, "Month(s)")
-        can.drawString(260, 452, format_currency(int(offers[2]["Payback"].get())))
-        can.drawString(345, 452, offers[2]["Payments"].get())
-        can.drawString(460, 452, format_currency(int(offers[2]["Payment"].get())))
+        can.drawString(260, 452, format_currency(int(offers[2][OfferItem.PAYBACK.value].get())))
+        can.drawString(345, 452, num_payments)
+        can.drawString(460, 452, format_currency(int(offers[2][OfferItem.PAYMENT.value].get())))
         can.drawString(360, 438, "before refinance")
 
         can.setFillColorRGB(51/256, 153/256, 255/256)
-        can.drawString(194, 452, format_currency(int(offers[2]["Amount"].get())))
-        can.drawString(345, 438, offers[2]["Payments before refinance"].get())
+        can.drawString(194, 452, format_currency(int(offers[2][OfferItem.AMOUNT.value].get())))
+        can.drawString(345, 438, str(int(num_payments) // 2))
 
         # third offer
         can.setFillColorRGB(0,0,0)
-        can.drawString(62, 412, offers[2]["Frequency"].get())
+        can.drawString(62, 412, offers[3][OfferItem.FREQUENCY.value].get())
 
-        term = offers[3]["Term"].get()
+        num_payments = offers[3][OfferItem.PAYMENTS.value].get()
+        term = offers[3][OfferItem.TERM.value].get()
         can.drawString(128, 412, term) 
         can.drawString(138 if int(term) < 10 else 143, 412, "Month(s)")
-        can.drawString(260, 412, format_currency(int(offers[2]["Payback"].get())))
-        can.drawString(345, 412, offers[2]["Payments"].get())
-        can.drawString(460, 412, format_currency(int(offers[2]["Payment"].get())))
+        can.drawString(260, 412, format_currency(int(offers[3][OfferItem.PAYBACK.value].get())))
+        can.drawString(345, 412, num_payments)
+        can.drawString(460, 412, format_currency(int(offers[3][OfferItem.PAYMENT.value].get())))
         can.drawString(360, 398, "before refinance")
 
         can.setFillColorRGB(51/256, 153/256, 255/256)
-        can.drawString(194, 412, format_currency(int(offers[2]["Amount"].get())))
-        can.drawString(345, 398, offers[2]["Payments before refinance"].get())
+        can.drawString(194, 412, format_currency(int(offers[3][OfferItem.AMOUNT.value].get())))
+        can.drawString(345, 398, str(int(num_payments) // 2))
 
     can.save()
 
