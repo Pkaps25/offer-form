@@ -1,1 +1,4 @@
 Approval*
+dist/
+build/
+*.spec

@@ -5,7 +5,8 @@ PYTHON = python
 PYINSTALLER = pyinstaller
 
 # Input Python script
-INPUT_SCRIPT = george.py
+BASE = george
+INPUT_SCRIPT = $(BASE).py
 
 # Output directory for the standalone executable
 OUTPUT_DIR = dist
@@ -28,6 +29,7 @@ clean:
 	rm -rf $(OUTPUT_DIR)
 	rm -rf __pycache__
 	rm -rf build
+	rm -rf $(BASE).spec
 
 # Run the standalone executable
 run:
