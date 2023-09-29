@@ -2,3 +2,5 @@ Approval*
 dist/
 build/
 *.spec
+.vscode/
+.ide/

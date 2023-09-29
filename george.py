@@ -273,16 +273,16 @@ def submit():
     # create a new PDF with Reportlab
     new_pdf = PdfReader(packet)
     # read your existing PDF
-    existing_pdf = PdfReader(open(template_pdf, "rb"))
-    output = PdfWriter()
-    # add the "watermark" (which is the new pdf) on the existing page
-    page = existing_pdf.pages[0]
-    page.merge_page(new_pdf.pages[0])
-    output.add_page(page)
-    # finally, write "output" to a real file
-    outputStream = open(f"Approval - {business_name}.pdf", "wb")
-    output.write(outputStream)
-    outputStream.close()
+    with open(template_pdf, "rb") as template_pdf_file:
+        existing_pdf = PdfReader(template_pdf_file)
+        output = PdfWriter()
+        # add the "watermark" (which is the new pdf) on the existing page
+        page = existing_pdf.pages[0]
+        page.merge_page(new_pdf.pages[0])
+        output.add_page(page)
+        # finally, write "output" to a real file
+        with open(f"Approval - {business_name}.pdf", "wb") as outputStream:
+            output.write(outputStream)
 
     # close the form
     base.destroy()
