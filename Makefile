@@ -5,7 +5,7 @@ PYTHON = python
 PYINSTALLER = pyinstaller
 
 # Input Python script
-BASE = george
+BASE = fill_form
 INPUT_SCRIPT = $(BASE).py
 
 # Output directory for the standalone executable
@@ -37,4 +37,3 @@ run:
 
 # Phony targets
 .PHONY: all build clean run
-
