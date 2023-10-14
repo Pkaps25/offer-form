@@ -12,7 +12,7 @@ INPUT_SCRIPT = $(BASE).py
 OUTPUT_DIR = dist
 
 # Target architecture
-TARGET_ARCH = x86_64
+TARGET_ARCH = arm64
 
 # PyInstaller options
 PYINSTALLER_OPTIONS = --onefile --target-arch $(TARGET_ARCH)
@@ -23,6 +23,7 @@ all: build
 # Build the standalone executable
 build:
 	$(PYINSTALLER) $(PYINSTALLER_OPTIONS) $(INPUT_SCRIPT)
+	mkdir dist/static && cp -r static/ dist/static/
 
 # Clean generated files
 clean:
