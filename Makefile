@@ -23,7 +23,7 @@ all: build
 # Build the standalone executable
 build:
 	$(PYINSTALLER) $(PYINSTALLER_OPTIONS) $(INPUT_SCRIPT)
-	mkdir dist/static && cp -r static/ dist/static/
+	mkdir dist/static && cp static/* dist/static/
 
 # Clean generated files
 clean:
@@ -31,6 +31,7 @@ clean:
 	rm -rf __pycache__
 	rm -rf build
 	rm -rf $(BASE).spec
+	rm -rf dist
 
 # Run the standalone executable
 run:
