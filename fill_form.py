@@ -75,9 +75,11 @@ Label(base, text="Additional notes", width=25, font=("arial", FORM_FONT_SIZE)).p
 Entry(base, textvariable=additional_notes_var).place(x=200, y=y_val)
 
 
-def format_currency(num):
-    cur = locale.currency(num, grouping=True)
-    return cur[:-3]
+def format_currency(num, cents=False):
+    decimal = "." in num
+    raw = float(num) if decimal else int(num)
+    cur = locale.currency(raw, grouping=True)
+    return cur if (cents and decimal) else cur[:-3]
 
 
 def validate_form():
@@ -162,15 +164,17 @@ def submit():
             before_refinance_x = 368
         can.drawString(128, 484, term)
         can.drawString(138 if int(term) < 10 else 143, 484, "Month(s)")
-        can.drawString(260, 484, format_currency(int(offers[1][OfferItem.PAYBACK.value].get())))
+        can.drawString(260, 484, format_currency(offers[1][OfferItem.PAYBACK.value].get()))
         can.drawString(345, 484, num_payments)
-        can.drawString(460, 484, format_currency(int(offers[1][OfferItem.PAYMENT.value].get())))
+        can.drawString(
+            460, 484, format_currency(offers[1][OfferItem.PAYMENT.value].get(), cents=True)
+        )
         can.drawString(before_refinance_x, 470, "before refinance")
         can.drawString(25, 380, "Additional notes:")
         can.drawString(112, 380, additional_notes_var.get())
 
         can.setFillColorRGB(*BLUE_COLOR_RGB)
-        can.drawString(194, 484, format_currency(int(offers[1][OfferItem.AMOUNT.value].get())))
+        can.drawString(194, 484, format_currency(offers[1][OfferItem.AMOUNT.value].get()))
         can.drawString(345, 470, str(payments_before_refinance))
 
     # 2 offers
@@ -192,13 +196,15 @@ def submit():
             before_refinance_x = 368
         can.drawString(128, 490, term)
         can.drawString(138 if int(term) < 10 else 143, 490, "Month(s)")
-        can.drawString(260, 490, format_currency(int(offers[1][OfferItem.PAYBACK.value].get())))
+        can.drawString(260, 490, format_currency(offers[1][OfferItem.PAYBACK.value].get()))
         can.drawString(345, 490, num_payments)
-        can.drawString(460, 490, format_currency(int(offers[1][OfferItem.PAYMENT.value].get())))
+        can.drawString(
+            460, 490, format_currency(offers[1][OfferItem.PAYMENT.value].get(), cents=True)
+        )
         can.drawString(before_refinance_x, 476, "before refinance")
 
         can.setFillColorRGB(*BLUE_COLOR_RGB)
-        can.drawString(194, 490, format_currency(int(offers[1][OfferItem.AMOUNT.value].get())))
+        can.drawString(194, 490, format_currency(offers[1][OfferItem.AMOUNT.value].get()))
         can.drawString(345, 476, str(payments_before_refinance))
 
         # second offer
@@ -215,13 +221,15 @@ def submit():
             before_refinance_x = 368
         can.drawString(128, 440, term)
         can.drawString(138 if int(term) < 10 else 143, 440, "Month(s)")
-        can.drawString(260, 440, format_currency(int(offers[2][OfferItem.PAYBACK.value].get())))
+        can.drawString(260, 440, format_currency(offers[2][OfferItem.PAYBACK.value].get()))
         can.drawString(345, 440, num_payments)
-        can.drawString(460, 440, format_currency(int(offers[2][OfferItem.PAYMENT.value].get())))
+        can.drawString(
+            460, 440, format_currency(offers[2][OfferItem.PAYMENT.value].get(), cents=True)
+        )
         can.drawString(before_refinance_x, 426, "before refinance")
 
         can.setFillColorRGB(*BLUE_COLOR_RGB)
-        can.drawString(194, 440, format_currency(int(offers[2][OfferItem.AMOUNT.value].get())))
+        can.drawString(194, 440, format_currency(offers[2][OfferItem.AMOUNT.value].get()))
         can.drawString(345, 426, str(payments_before_refinance))
 
     # 3 offers
@@ -240,13 +248,15 @@ def submit():
             before_refinance_x = 368
         can.drawString(128, 495, term)
         can.drawString(138 if int(term) < 10 else 143, 495, "Month(s)")
-        can.drawString(260, 495, format_currency(int(offers[1][OfferItem.PAYBACK.value].get())))
+        can.drawString(260, 495, format_currency(offers[1][OfferItem.PAYBACK.value].get()))
         can.drawString(345, 495, num_payments)
-        can.drawString(460, 495, format_currency(int(offers[1][OfferItem.PAYMENT.value].get())))
+        can.drawString(
+            460, 495, format_currency(offers[1][OfferItem.PAYMENT.value].get(), cents=True)
+        )
         can.drawString(before_refinance_x, 481, "before refinance")
 
         can.setFillColorRGB(*BLUE_COLOR_RGB)
-        can.drawString(194, 495, format_currency(int(offers[1][OfferItem.AMOUNT.value].get())))
+        can.drawString(194, 495, format_currency(offers[1][OfferItem.AMOUNT.value].get()))
         can.drawString(345, 481, str(payments_before_refinance))
 
         # second offer
@@ -263,13 +273,15 @@ def submit():
             before_refinance_x = 368
         can.drawString(128, 452, term)
         can.drawString(138 if int(term) < 10 else 143, 452, "Month(s)")
-        can.drawString(260, 452, format_currency(int(offers[2][OfferItem.PAYBACK.value].get())))
+        can.drawString(260, 452, format_currency(offers[2][OfferItem.PAYBACK.value].get()))
         can.drawString(345, 452, num_payments)
-        can.drawString(460, 452, format_currency(int(offers[2][OfferItem.PAYMENT.value].get())))
+        can.drawString(
+            460, 452, format_currency(offers[2][OfferItem.PAYMENT.value].get(), cents=True)
+        )
         can.drawString(before_refinance_x, 438, "before refinance")
 
         can.setFillColorRGB(*BLUE_COLOR_RGB)
-        can.drawString(194, 452, format_currency(int(offers[2][OfferItem.AMOUNT.value].get())))
+        can.drawString(194, 452, format_currency(offers[2][OfferItem.AMOUNT.value].get()))
         can.drawString(345, 438, str(payments_before_refinance))
 
         # third offer
@@ -286,13 +298,15 @@ def submit():
             before_refinance_x = 368
         can.drawString(128, 412, term)
         can.drawString(138 if int(term) < 10 else 143, 412, "Month(s)")
-        can.drawString(260, 412, format_currency(int(offers[3][OfferItem.PAYBACK.value].get())))
+        can.drawString(260, 412, format_currency(offers[3][OfferItem.PAYBACK.value].get()))
         can.drawString(345, 412, num_payments)
-        can.drawString(460, 412, format_currency(int(offers[3][OfferItem.PAYMENT.value].get())))
+        can.drawString(
+            460, 412, format_currency(offers[3][OfferItem.PAYMENT.value].get(), cents=True)
+        )
         can.drawString(before_refinance_x, 398, "before refinance")
 
         can.setFillColorRGB(*BLUE_COLOR_RGB)
-        can.drawString(194, 412, format_currency(int(offers[3][OfferItem.AMOUNT.value].get())))
+        can.drawString(194, 412, format_currency(offers[3][OfferItem.AMOUNT.value].get()))
         can.drawString(345, 398, str(payments_before_refinance))
 
     can.save()
