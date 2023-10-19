@@ -45,7 +45,7 @@ y_vals = iter(range(10, 2000, 33))
 for required_item in RequiredItem:
     required_vars[required_item] = StringVar()
     y_val = next(y_vals)
-    label = Label(base, text=required_item.value, width=25, font=("arial", FORM_FONT_SIZE))
+    label = Label(base, text=required_item.value, width=30, font=("arial", FORM_FONT_SIZE))
     label.place(x=19, y=y_val)
     entry = Entry(base, textvariable=required_vars[required_item])
     entry.place(x=200, y=y_val)
