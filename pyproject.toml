@@ -13,6 +13,9 @@ PyPDF2 = "^3.0.1"
 reportlab = "4.0.5"
 pyinstaller = "^6.1.0"
 
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.4"
+
 [tool.isort]
 profile = "black"
 

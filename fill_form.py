@@ -1,4 +1,5 @@
 import enum
+import html
 import io
 import locale
 import os
@@ -135,8 +136,8 @@ def submit():
     if not validate_form():
         return
 
-    business_name = required_vars[RequiredItem.BUSINESS_NAME].get()
-    owner_name = required_vars[RequiredItem.OWNER_NAME].get()
+    business_name = html.escape(required_vars[RequiredItem.BUSINESS_NAME].get())
+    owner_name = html.escape(required_vars[RequiredItem.OWNER_NAME].get())
 
     packet = io.BytesIO()
     can = canvas.Canvas(packet, pagesize=letter)
